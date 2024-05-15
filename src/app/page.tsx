@@ -1,6 +1,5 @@
 import {
   SignInButton,
-  SignUp,
   SignUpButton,
   SignedIn,
   SignedOut,
@@ -31,12 +30,12 @@ export default function HomePage() {
               <UserButton />
             </SignedIn>
             <SignedOut>
-              <SignUpButton forceRedirectUrl={"/dashboard"}>
+              <SignUpButton forceRedirectUrl="/dashboard">
                 <span className="cursor-pointer text-sm font-medium underline-offset-4 hover:underline">
                   Sign Up
                 </span>
               </SignUpButton>
-              <SignInButton forceRedirectUrl={"/dashboard"}>
+              <SignInButton forceRedirectUrl="/dashboard">
                 <span className="cursor-pointer text-sm font-medium underline-offset-4 hover:underline">
                   Sign In
                 </span>
@@ -61,9 +60,12 @@ export default function HomePage() {
                   </div>
                   <div className="flex flex-col gap-2 min-[400px]:flex-row">
                     <SignUpButton forceRedirectUrl={"/dashboard"}>
-                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300">
+                      <Link
+                        href="/dashboard"
+                        className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                      >
                         Get Started
-                      </button>
+                      </Link>
                     </SignUpButton>
                   </div>
                 </div>

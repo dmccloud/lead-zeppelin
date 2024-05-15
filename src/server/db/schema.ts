@@ -1,13 +1,16 @@
+import { float } from "drizzle-orm/mysql-core";
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
+
 import {
   index,
   pgTableCreator,
   serial,
   timestamp,
   varchar,
+  decimal,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -22,11 +25,12 @@ export const leads = createTable(
   "leads",
   {
     id: serial("id").primaryKey(),
+    ownerId: varchar("owner_id", { length: 256 }),
     name: varchar("name", { length: 256 }),
     email: varchar("email", { length: 256 }),
     status: varchar("status", { length: 256 }),
-    estimatedSaleAmount: varchar("estimated_sale_amount", { length: 256 }),
-    estimatedCommission: varchar("estimated_commission", { length: 256 }),
+    estimatedSaleAmount: decimal("estimated_sale_amount"),
+    estimatedCommission: decimal("estimated_commission"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
