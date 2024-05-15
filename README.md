@@ -1,8 +1,8 @@
 ## TODO
 
-- [ ] Deploy on vercel
+- [x] Deploy on vercel
 - [ ] scaffold basic ui / add shadcn
-- [ ] setup database
+- [x] setup database
 - [ ] attach database to ui
 - [ ] create data table componenet
 - [ ] add authentication

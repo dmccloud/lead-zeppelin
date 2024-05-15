@@ -19,10 +19,14 @@ import {
 export const createTable = pgTableCreator((name) => `lead-zeppelin_${name}`);
 
 export const posts = createTable(
-  "post",
+  "leads",
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }),
+    email: varchar("email", { length: 256 }),
+    status: varchar("status", { length: 256 }),
+    estimatedSaleAmount: varchar("estimated_sale_amount", { length: 256 }),
+    estimatedCommission: varchar("estimated_commission", { length: 256 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -30,5 +34,6 @@ export const posts = createTable(
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+    emailIndex: index("email_idx").on(example.email),
+  }),
 );
