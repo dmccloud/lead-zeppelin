@@ -2,6 +2,7 @@ import { db } from "@/server/db";
 import { AddForm } from "./_components/AddForm";
 import LeadTable from "./_components/LeadTable";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { Suspense } from "react";
 
 const DashboardPage: React.FC = async () => {
   const data = await db.query.leads.findMany();
@@ -29,8 +30,10 @@ const DashboardPage: React.FC = async () => {
   ];
   return (
     <div>
-      <AddForm />
-      <LeadTable rows={rows} columns={columns} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AddForm />
+        <LeadTable rows={rows} columns={columns} />
+      </Suspense>
     </div>
   );
 };
