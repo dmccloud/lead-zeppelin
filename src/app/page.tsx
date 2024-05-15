@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaCalendar, FaClipboard, FaMountain, FaUsers } from "react-icons/fa";
+import { FaCalendar, FaClipboard, FaUsers } from "react-icons/fa";
 import { FiPieChart } from "react-icons/fi";
 import { TbZeppelinFilled } from "react-icons/tb";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+    <main>
       <div className="flex min-h-[100dvh] flex-col">
         <header className="flex h-14 items-center px-4 lg:px-6">
           <Link className="flex items-center justify-center" href="#">

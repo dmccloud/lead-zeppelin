@@ -18,7 +18,7 @@ import {
  */
 export const createTable = pgTableCreator((name) => `lead-zeppelin_${name}`);
 
-export const posts = createTable(
+export const leads = createTable(
   "leads",
   {
     id: serial("id").primaryKey(),
