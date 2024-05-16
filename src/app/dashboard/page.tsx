@@ -17,7 +17,7 @@ const DashboardPage: React.FC = async () => {
   const rows: GridRowsProp = data;
 
   return (
-    <div>
+    <div className="flex flex-col space-y-4">
       <Suspense fallback={<div>Loading...</div>}>
         <AddForm />
         <LeadTable rows={rows} />

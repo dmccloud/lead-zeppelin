@@ -4,7 +4,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-
+import { createInsertSchema } from "drizzle-zod";
 import {
   index,
   pgTableCreator,
@@ -31,7 +31,7 @@ export const leads = createTable(
     email: varchar("email", { length: 256 }),
     status: varchar("status", { length: 256 }),
     estimatedSaleAmount: decimal("estimated_sale_amount"),
-    estimatedCommission: decimal("estimated_commission"),
+    estimatedCommission: decimal("estimated_commission", { precision: 2 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -44,3 +44,14 @@ export const leads = createTable(
     emailIndex: index("email_idx").on(example.email),
   }),
 );
+
+export const insertLeadsSchema = createInsertSchema(leads, {
+  ownerId: (schema) => schema.ownerId.min(2).max(256),
+  name: (schema) => schema.name.min(2).max(256),
+  email: (schema) => schema.email.email(),
+  status: (schema) => schema.status.min(2).max(256),
+  estimatedSaleAmount: (schema) => schema.estimatedSaleAmount.min(0),
+  estimatedCommission: (schema) => schema.estimatedCommission.min(0),
+  createdAt: (schema) => schema.createdAt,
+  updatedAt: (schema) => schema.updatedAt,
+});

@@ -47,7 +47,6 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
       field: "estimatedCommission",
       headerName: "Estimated Commission",
       flex: 1,
-      editable: true,
     },
     {
       field: "actions",
@@ -59,12 +58,19 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
   return (
     <div className="mx-20 bg-slate-700 text-white">
       <DataGrid
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
         processRowUpdate={async (updatedRow, originalRow) => {
           try {
             await updateLead(originalRow, updatedRow);
             toast("Successfully updated row");
-          } catch (error) {
-            toast("Failed to update row");
+          } catch (error: unknown) {
+            toast(error ? error.message : "Failed to update row");
             console.error(error);
           }
         }}
@@ -88,6 +94,11 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
         }}
         rows={rows}
         columns={columns}
+        pageSizeOptions={[
+          { value: 5, label: "5" },
+          { value: 10, label: "10" },
+          { value: 20, label: "20" },
+        ]}
       />
     </div>
   );

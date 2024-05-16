@@ -24,11 +24,10 @@ export function AddForm() {
   const [state, formAction] = useFormState(createLead, initialState);
 
   useEffect(() => {
-    console.log("MESSAGE", state?.message);
     if (state?.message) {
       toast(state.message);
     }
-  }, [state.message]);
+  }, [state]);
 
   return (
     <div className="flex w-full justify-center">

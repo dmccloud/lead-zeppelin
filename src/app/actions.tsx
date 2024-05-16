@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use server";
 
+import { commissionCalc } from "@/lib/utils";
 import { db } from "@/server/db";
-import { leads } from "@/server/db/schema";
+import { insertLeadsSchema, leads } from "@/server/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { type InferInsertModel, and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -28,6 +30,10 @@ export async function createLead(prevState: any, formData: FormData) {
     estimatedCommission: "0.0",
   };
 
+  if (formSchema.safeParse(data).success === false) {
+    return { message: "Invalid data" };
+  }
+
   try {
     await db.insert(leads).values(data);
     revalidatePath("/dashboard");
@@ -46,6 +52,18 @@ export async function updateLead(
     return { message: "No user ID found" };
   }
   const data = formData;
+  if (data.status?.toLowerCase() === "unqualified") {
+    data.estimatedCommission = "0.0";
+  } else {
+    data.estimatedCommission = commissionCalc(
+      parseFloat(data.estimatedSaleAmount!),
+    ).toString();
+  }
+
+  const schema = insertLeadsSchema;
+  if (schema.safeParse(data).error) {
+    throw new Error("Invalid data");
+  }
 
   try {
     await db
@@ -53,9 +71,10 @@ export async function updateLead(
       .set(data)
       .where(and(eq(leads.id, data.id!), eq(leads.ownerId, userId)));
     revalidatePath("/dashboard");
+
     return { message: "Successfully updated lead" };
-  } catch (error) {
-    return { message: "Failed to update table" };
+  } catch (error: unknown) {
+    return { message: error?.message ?? "Failed to update table" };
   }
 }
 
