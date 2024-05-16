@@ -2,7 +2,9 @@
 
 import { createLead } from "@/app/actions";
 import { Button, Input } from "@/components/ui";
+import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { toast } from "sonner";
 
 const initialState = {
   message: "",
@@ -20,6 +22,14 @@ const SubmitButton = () => {
 
 export function AddForm() {
   const [state, formAction] = useFormState(createLead, initialState);
+
+  useEffect(() => {
+    console.log("MESSAGE", state?.message);
+    if (state?.message) {
+      toast(state.message);
+    }
+  }, [state.message]);
+
   return (
     <div className="flex w-full justify-center">
       <form className="flex flex-row flex-wrap gap-2" action={formAction}>
@@ -41,9 +51,6 @@ export function AddForm() {
           placeholder="Email"
         />
         <SubmitButton />
-        <p aria-live="polite" className="sr-only" role="status">
-          {state?.message}
-        </p>
       </form>
     </div>
   );

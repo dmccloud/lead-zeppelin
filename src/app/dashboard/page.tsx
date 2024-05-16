@@ -1,17 +1,11 @@
 import { db } from "@/server/db";
 import { AddForm } from "./_components/AddForm";
 import LeadTable from "./_components/LeadTable";
-import {
-  GridActionsCellItem,
-  type GridColDef,
-  type GridRowsProp,
-} from "@mui/x-data-grid";
+import { type GridRowsProp } from "@mui/x-data-grid";
 import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { leads } from "@/server/db/schema";
-import { FaTrash } from "react-icons/fa";
-import { DeleteForm } from "./_components/DeleteForm";
 
 const DashboardPage: React.FC = async () => {
   const { userId } = auth();

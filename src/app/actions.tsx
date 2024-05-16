@@ -45,8 +45,6 @@ export async function updateLead(
   if (!userId) {
     return { message: "No user ID found" };
   }
-  console.log(formData);
-
   const data = formData;
 
   try {
@@ -70,7 +68,6 @@ export async function deleteLead(prevState: any, formData: FormData) {
     id: z.string(),
   });
   const data = formSchema.parse(Object.fromEntries(formData));
-  console.log(data);
 
   try {
     await db

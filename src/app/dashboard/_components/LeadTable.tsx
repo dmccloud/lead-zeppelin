@@ -10,6 +10,7 @@ import {
 } from "@mui/x-data-grid";
 
 import { DeleteForm } from "./DeleteForm";
+import { toast } from "sonner";
 
 const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
@@ -59,8 +60,13 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
     <div className="mx-20 bg-slate-700 text-white">
       <DataGrid
         processRowUpdate={async (updatedRow, originalRow) => {
-          console.log(updatedRow);
-          await updateLead(originalRow, updatedRow);
+          try {
+            await updateLead(originalRow, updatedRow);
+            toast("Successfully updated row");
+          } catch (error) {
+            toast("Failed to update row");
+            console.error(error);
+          }
         }}
         onRowEditStop={handleRowEditStop}
         // onProcessRowUpdateError={handleProcessRowUpdateError}
