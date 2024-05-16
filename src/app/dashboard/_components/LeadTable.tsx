@@ -52,14 +52,14 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
       flex: 1,
     },
     {
-      field: "actions",
+      field: "",
       type: "actions",
       headerName: undefined,
       getActions: ({ id }) => [<DeleteForm key={id} id={id as number} />],
     },
   ];
   return (
-    <div className="mx-20 bg-slate-700 text-white">
+    <div className="mx-6 bg-slate-700 text-white sm:mx-20">
       <DataGrid
         initialState={{
           pagination: {
