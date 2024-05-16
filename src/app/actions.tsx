@@ -55,7 +55,9 @@ export async function updateLead(
   } else {
     data.estimatedCommission = commissionCalc(
       parseFloat(data.estimatedSaleAmount!),
-    ).toString();
+    )
+      .toPrecision(2)
+      .toString();
   }
 
   const schema = insertLeadsSchema;

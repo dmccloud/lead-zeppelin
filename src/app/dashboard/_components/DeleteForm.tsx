@@ -11,18 +11,25 @@ const initialState = {
   message: "",
 };
 
-const DeleteButton = () => {
+const DeleteButton = ({ onClick }: { onClick?: () => void }) => {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" disabled={pending}>
+    <Button onClick={() => onClick} type="submit" disabled={pending}>
       <FaTrash />
     </Button>
   );
 };
 
-export const DeleteForm = ({ id }: { id: number }) => {
+export const DeleteForm = ({
+  id,
+  onClick,
+}: {
+  id: number;
+  onClick?: () => void;
+}) => {
   const [state, formAction] = useFormState(deleteLead, initialState);
+
   useEffect(() => {
     if (state?.message) {
       toast(state.message);
@@ -32,7 +39,7 @@ export const DeleteForm = ({ id }: { id: number }) => {
   return (
     <form action={formAction}>
       <input type="hidden" name="id" value={id} />
-      <DeleteButton />
+      <DeleteButton onClick={() => onClick} />
       <p aria-live="polite" className="sr-only" role="status">
         {state?.message}
       </p>
