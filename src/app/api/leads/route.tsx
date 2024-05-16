@@ -2,14 +2,17 @@
 import { db } from "@/server/db";
 import { leads } from "@/server/db/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { InferInsertModel, eq } from "drizzle-orm";
+import { InferInsertModel, desc, eq } from "drizzle-orm";
 
 export async function GET(req: Request) {
   const url = new URL(req.url!);
   const searchParams = new URLSearchParams(url.searchParams);
 
   if (searchParams.get("getAll")) {
-    const results = await db.query.leads.findMany();
+    const results = await db
+      .select()
+      .from(leads)
+      .orderBy(desc(leads.createdAt), desc(leads.updatedAt));
     return Response.json(results);
   }
 
@@ -21,7 +24,8 @@ export async function GET(req: Request) {
     const result = await db
       .select()
       .from(leads)
-      .where(eq(leads.id, parseInt(id)));
+      .where(eq(leads.id, parseInt(id)))
+      .orderBy(desc(leads.createdAt), desc(leads.updatedAt));
     return Response.json(result);
   }
 
@@ -33,20 +37,24 @@ export async function GET(req: Request) {
     const result = await db
       .select()
       .from(leads)
-      .where(eq(leads.ownerId, ownerId));
+      .where(eq(leads.ownerId, ownerId))
+      .orderBy(desc(leads.createdAt), desc(leads.updatedAt));
     return Response.json(result);
   }
 }
 
 export async function POST(req: Request) {
   const data: InferInsertModel<typeof leads> = await req.json();
-  const result = await db.insert(leads).values({
-    ...data,
-  });
+  const result = await db
+    .insert(leads)
+    .values({
+      ...data,
+    })
+    .returning();
   return Response.json(result);
 }
 
-export async function PATCH(req: Request) {
+export async function PATCH(req: Request, res: Response) {
   const { searchParams } = new URL(req.url!);
   const id = searchParams.get("id");
   if (!id) {
@@ -56,7 +64,8 @@ export async function PATCH(req: Request) {
   const result = await db
     .update(leads)
     .set(data)
-    .where(eq(leads.id, parseInt(id)));
+    .where(eq(leads.id, parseInt(id)))
+    .returning();
   return Response.json(result);
 }
 
@@ -66,6 +75,9 @@ export async function DELETE(req: Request) {
   if (!id) {
     return Response.error();
   }
-  const result = await db.delete(leads).where(eq(leads.id, parseInt(id)));
+  const result = await db
+    .delete(leads)
+    .where(eq(leads.id, parseInt(id)))
+    .returning();
   return Response.json(result);
 }
