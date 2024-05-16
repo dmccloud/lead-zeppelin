@@ -4,7 +4,7 @@ import { leads } from "@/server/db/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { InferInsertModel, eq } from "drizzle-orm";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request) {
   const url = new URL(req.url!);
   const searchParams = new URLSearchParams(url.searchParams);
 
