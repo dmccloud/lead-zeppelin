@@ -69,7 +69,7 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
           try {
             await updateLead(originalRow, updatedRow);
             toast("Successfully updated row");
-          } catch (error: unknown) {
+          } catch (error: unknown | any) {
             toast(error ? error.message : "Failed to update row");
             console.error(error);
           }

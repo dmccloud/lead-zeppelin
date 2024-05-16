@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use server";
 
 import { commissionCalc } from "@/lib/utils";
@@ -73,8 +71,8 @@ export async function updateLead(
     revalidatePath("/dashboard");
 
     return { message: "Successfully updated lead" };
-  } catch (error: unknown) {
-    return { message: error?.message ?? "Failed to update table" };
+  } catch (error: any | unknown) {
+    return { message: error.message ?? "Failed to update table" };
   }
 }
 
