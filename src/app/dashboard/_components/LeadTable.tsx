@@ -7,6 +7,9 @@ import {
   GridRowEditStopReasons,
   type GridColDef,
   type GridRowsProp,
+  type GridCellEditStopParams,
+  GridCellEditStopReasons,
+  type MuiEvent,
 } from "@mui/x-data-grid";
 
 import { DeleteForm } from "./DeleteForm";
@@ -18,7 +21,7 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
     event,
   ) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
+      event.defaultMuiPrevented = false;
     }
   };
   const columns: GridColDef[] = [
@@ -99,6 +102,11 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
           { value: 10, label: "10" },
           { value: 20, label: "20" },
         ]}
+        onCellEditStop={(params: GridCellEditStopParams, event: MuiEvent) => {
+          if (params.reason === GridCellEditStopReasons.cellFocusOut) {
+            event.defaultMuiPrevented = true;
+          }
+        }}
       />
     </div>
   );
