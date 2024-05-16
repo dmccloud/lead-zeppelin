@@ -20,7 +20,7 @@ export default function DashboardLayout({
           <TbZeppelinFilled className="h-6 w-6" />
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <SignOutButton>
+          <SignOutButton redirectUrl="/">
             <span className="cursor-pointer text-sm font-medium underline-offset-4 hover:underline">
               Sign out
             </span>

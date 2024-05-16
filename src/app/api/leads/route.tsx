@@ -1,12 +1,10 @@
-/* eslint-disable */
 import { db } from "@/server/db";
 import { insertLeadsSchema, leads } from "@/server/db/schema";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { InferInsertModel, desc, eq } from "drizzle-orm";
+import { type InferInsertModel, desc, eq } from "drizzle-orm";
 import { commissionCalc } from "@/lib/utils";
 
 export async function GET(req: Request) {
-  const url = new URL(req.url!);
+  const url = new URL(req.url);
   const searchParams = new URLSearchParams(url.searchParams);
 
   if (searchParams.get("getAll")) {
@@ -70,8 +68,8 @@ export async function POST(req: Request) {
   return Response.json(result);
 }
 
-export async function PATCH(req: Request, res: Response) {
-  const { searchParams } = new URL(req.url!);
+export async function PATCH(req: Request) {
+  const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
   if (!id) {
     return Response.error();
@@ -102,7 +100,7 @@ export async function PATCH(req: Request, res: Response) {
 }
 
 export async function DELETE(req: Request) {
-  const { searchParams } = new URL(req.url!);
+  const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
   if (!id) {
     return Response.error();

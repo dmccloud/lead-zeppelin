@@ -98,7 +98,6 @@ export default function FullFeaturedCrudGrid({
       flex: 1,
       editable: true,
       valueFormatter: (value: string) => {
-        // format for us currency
         return new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
@@ -110,7 +109,6 @@ export default function FullFeaturedCrudGrid({
       headerName: "Estimated Commission",
       flex: 1,
       valueFormatter: (value: string) => {
-        // format for us currency
         return new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
