@@ -51,7 +51,4 @@ export const insertLeadsSchema = createInsertSchema(leads, {
   email: (schema) => schema.email.email(),
   status: (schema) => schema.status.min(2).max(256),
   estimatedSaleAmount: (schema) => schema.estimatedSaleAmount.min(0),
-  estimatedCommission: (schema) => schema.estimatedCommission.min(0),
-  createdAt: (schema) => schema.createdAt,
-  updatedAt: (schema) => schema.updatedAt,
 });

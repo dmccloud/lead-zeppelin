@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { db } from "@/server/db";
-import { leads } from "@/server/db/schema";
+import { insertLeadsSchema, leads } from "@/server/db/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { InferInsertModel, desc, eq } from "drizzle-orm";
+import { commissionCalc } from "@/lib/utils";
 
 export async function GET(req: Request) {
   const url = new URL(req.url!);
@@ -45,6 +46,21 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const data: InferInsertModel<typeof leads> = await req.json();
+  if (data.status?.toLowerCase() === "unqualified") {
+    data.estimatedCommission = "0.0";
+  } else {
+    data.estimatedCommission = commissionCalc(
+      parseFloat(data.estimatedSaleAmount!),
+    )
+      .toPrecision(2)
+      .toString();
+  }
+
+  const schema = insertLeadsSchema;
+  if (schema.safeParse(data).error) {
+    return Response.json({ message: "Invalid data", status: 400 });
+  }
+
   const result = await db
     .insert(leads)
     .values({
@@ -61,6 +77,22 @@ export async function PATCH(req: Request, res: Response) {
     return Response.error();
   }
   const data: InferInsertModel<typeof leads> = await req.json();
+
+  if (data.status?.toLowerCase() === "unqualified") {
+    data.estimatedCommission = "0.0";
+  } else {
+    data.estimatedCommission = commissionCalc(
+      parseFloat(data.estimatedSaleAmount!),
+    )
+      .toPrecision(2)
+      .toString();
+  }
+
+  const schema = insertLeadsSchema;
+  if (schema.safeParse(data).error) {
+    return Response.json({ message: "Invalid data", status: 400 });
+  }
+
   const result = await db
     .update(leads)
     .set(data)
