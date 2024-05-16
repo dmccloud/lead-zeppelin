@@ -61,19 +61,21 @@ export async function updateLead(
   }
 }
 
-export async function deleteLead(id: number) {
+export async function deleteLead(prevState: any, formData: FormData) {
   const { userId } = auth();
   if (!userId) {
     return { message: "No user ID found" };
   }
-
-  const data = id;
+  const formSchema = z.object({
+    id: z.string(),
+  });
+  const data = formSchema.parse(Object.fromEntries(formData));
   console.log(data);
 
   try {
     await db
       .delete(leads)
-      .where(and(eq(leads.id, data), eq(leads.ownerId, userId)));
+      .where(and(eq(leads.id, parseInt(data.id)), eq(leads.ownerId, userId)));
     revalidatePath("/dashboard");
     return { message: "Successfully deleted lead" };
   } catch (error) {

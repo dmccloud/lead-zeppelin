@@ -2,8 +2,8 @@
 
 import { deleteLead } from "@/app/actions";
 import { Button } from "@/components/ui";
-import type { leads } from "@/server/db/schema";
 import { useFormState, useFormStatus } from "react-dom";
+import { FaTrash } from "react-icons/fa";
 
 const initialState = {
   message: "",
@@ -14,18 +14,12 @@ const DeleteButton = () => {
 
   return (
     <Button type="submit" disabled={pending}>
-      Submit
+      <FaTrash />
     </Button>
   );
 };
 
-export const DeleteForm = ({
-  id,
-  lead,
-}: {
-  id: number;
-  lead: typeof leads;
-}) => {
+export const DeleteForm = ({ id }: { id: number }) => {
   const [state, formAction] = useFormState(deleteLead, initialState);
   return (
     <form action={formAction}>

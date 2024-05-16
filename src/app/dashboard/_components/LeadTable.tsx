@@ -1,21 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 "use client";
-import { deleteLead, updateLead } from "@/app/actions";
+import { updateLead } from "@/app/actions";
 import {
   DataGrid,
-  GridActionsCellItem,
   type GridEventListener,
   GridRowEditStopReasons,
   type GridColDef,
   type GridRowsProp,
 } from "@mui/x-data-grid";
-import { FaTrash } from "react-icons/fa";
+
+import { DeleteForm } from "./DeleteForm";
 
 const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
-  const handleDeleteClick = (id: number) => async () => {
-    await deleteLead(id);
-  };
-
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
     event,
@@ -56,15 +52,7 @@ const LeadTable = ({ rows }: { rows: GridRowsProp }) => {
       field: "actions",
       type: "actions",
       headerName: undefined,
-      getActions: ({ id }) => [
-        <GridActionsCellItem
-          key="som"
-          icon={<FaTrash />}
-          label="Delete"
-          onClick={handleDeleteClick(id as number)}
-          color="inherit"
-        />,
-      ],
+      getActions: ({ id }) => [<DeleteForm key={id} id={id as number} />],
     },
   ];
   return (
