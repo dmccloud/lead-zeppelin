@@ -1,4 +1,5 @@
-import { float } from "drizzle-orm/mysql-core";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment  */
+/* eslint-disable @typescript-eslint/no-unsafe-call  */
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
@@ -34,7 +35,9 @@ export const leads = createTable(
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    updatedAt: timestamp("updatedAt", { withTimezone: true }).$onUpdate(
+      () => new Date(),
+    ),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
