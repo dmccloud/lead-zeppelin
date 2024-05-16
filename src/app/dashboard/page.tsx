@@ -1,11 +1,17 @@
 import { db } from "@/server/db";
 import { AddForm } from "./_components/AddForm";
 import LeadTable from "./_components/LeadTable";
-import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import {
+  GridActionsCellItem,
+  type GridColDef,
+  type GridRowsProp,
+} from "@mui/x-data-grid";
 import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { leads } from "@/server/db/schema";
+import { FaTrash } from "react-icons/fa";
+import { DeleteForm } from "./_components/DeleteForm";
 
 const DashboardPage: React.FC = async () => {
   const { userId } = auth();
@@ -16,30 +22,11 @@ const DashboardPage: React.FC = async () => {
 
   const rows: GridRowsProp = data;
 
-  const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", flex: 1 },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    { field: "status", headerName: "Status", flex: 1 },
-    {
-      field: "estimatedSaleAmount",
-      headerName: "Estimated Sale Amount",
-      flex: 1,
-    },
-    {
-      field: "estimatedCommission",
-      headerName: "Estimated Commission",
-      flex: 1,
-    },
-  ];
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <AddForm />
-        <LeadTable rows={rows} columns={columns} />
+        <LeadTable rows={rows} />
       </Suspense>
     </div>
   );
